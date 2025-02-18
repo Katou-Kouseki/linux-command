@@ -7,18 +7,21 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
           registry-url: 'https://registry.npmjs.org'
 
       - name: Generate Contributors Images
         uses: jaywcjlove/github-action-contributors@main
         id: contributors
         with:
-          filter-author: (renovate\[bot\]|renovate-bot|dependabot\[bot\])
+          filter-author: (renovate\[bot\]|renovate-bot|@github-actions-bot|dependabot\[bot\])
           avatarSize: 42
 
       - name: Modify README.md
@@ -39,12 +42,15 @@ jobs:
           body: |
             ${{steps.contributors.outputs.htmlList}}
 
+      - run: npm install
+      - run: npm run dash
+      - run: cp CONTRIBUTORS.svg .deploy
+
       - name: Build Linux Command
         run: |
           npm install
           npm run dash
           cp CONTRIBUTORS.svg .deploy
-          rm -rf .deploy/linux-command.docset 
 
       - name: Create Tag
         id: create_tag
@@ -60,15 +66,6 @@ jobs:
         run: |
           echo "<entry><version>${{steps.create_tag.outputs.versionNumber}}</version><url>https://jaywcjlove.github.io/linux-command/linux-command.docset.tgz</url></entry>" > .deploy/linux-command-docset.xml
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          commit_message: '[${{steps.tag_version.outputs.tag}}] ${{ github.event.head_commit.message }}'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./.deploy
-          user_name: github-actions[bot]
-          user_email: github-actions[bot]@users.noreply.github.com
-
       - name: Generate Changelog
         id: changelog
         uses: jaywcjlove/changelog-generator@main
@@ -80,7 +77,9 @@ jobs:
         uses: ncipollo/release-action@v1
         if: steps.create_tag.outputs.successful
         with:
+          allowUpdates: true
           artifacts: '.deploy/linux-command.docset.tgz'
+          draft: false
           token: ${{ secrets.GITHUB_TOKEN }}
           name: ${{ steps.create_tag.outputs.version }}
           tag: ${{ steps.create_tag.outputs.version }}
@@ -122,23 +121,34 @@ jobs:
             http://localhost:9665/
             ```
 
-      - run: npm publish
+      - run: rm -rf .deploy/linux-command.docset 
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          commit_message: '[${{steps.tag_version.outputs.tag}}] ${{ github.event.head_commit.message }}'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./.deploy
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+    
+      - run: npm publish --access public --provenance
         continue-on-error: true
         name: 📦 linux-command publish to NPM
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
       # Create Docker Image
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push image:latest
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           push: true
           context: .
@@ -146,7 +156,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USER }}/linux-command:latest
 
       - name: Build and push image:tags
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         if: steps.create_tag.outputs.successful
         with:
           push: true
@@ -154,30 +164,30 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ secrets.DOCKER_USER }}/linux-command:${{steps.changelog.outputs.version}}
 
-      # Create Docker Image in Github
-      - name: Login to the GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      # # Create Docker Image in Github
+      # - name: Login to the GitHub Container Registry
+      #   uses: docker/login-action@v2
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push image:latest
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          context: .
-          platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/jaywcjlove/linux-command:latest
+      # - name: Build and push image:latest
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     push: true
+      #     context: .
+      #     platforms: linux/amd64,linux/arm64
+      #     tags: ghcr.io/jaywcjlove/linux-command:latest
 
-      - name: Build and push image:tags
-        uses: docker/build-push-action@v3
-        if: steps.create_tag.outputs.successful
-        with:
-          push: true
-          context: .
-          platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/jaywcjlove/linux-command:${{steps.changelog.outputs.version}}
+      # - name: Build and push image:tags
+      #   uses: docker/build-push-action@v6
+      #   if: steps.create_tag.outputs.successful
+      #   with:
+      #     push: true
+      #     context: .
+      #     platforms: linux/amd64,linux/arm64
+      #     tags: ghcr.io/jaywcjlove/linux-command:${{steps.changelog.outputs.version}}
 
       # # Create Docker Image
       # - name: Docker login
