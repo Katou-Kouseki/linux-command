@@ -364,6 +364,11 @@
     "p": "/colrm",
     "d": "删除文件中的指定列"
   },
+  "column": {
+    "n": "column",
+    "p": "/column",
+    "d": "按列格式化输出文件"
+  },
   "comm": {
     "n": "comm",
     "p": "/comm",
@@ -403,6 +408,11 @@
     "n": "cpio",
     "p": "/cpio",
     "d": "用来建立、还原备份档的工具程序"
+  },
+  "createrepo": {
+    "n": "createrepo",
+    "p": "/createrepo",
+    "d": "创建YUM仓库"
   },
   "crontab": {
     "n": "crontab",
@@ -543,6 +553,11 @@
     "n": "dnsdomainname",
     "p": "/dnsdomainname",
     "d": "定义DNS系统中FQDN名称的域名"
+  },
+  "docker": {
+    "n": "docker",
+    "p": "/docker",
+    "d": "容器化技术，可以将应用程序及其依赖项打包到一个可移植的容器中，使其可以在不同的环境中运行"
   },
   "domainname": {
     "n": "domainname",
@@ -744,6 +759,11 @@
     "p": "/fgrep",
     "d": "为文件搜索文字字符串"
   },
+  "figlet": {
+    "n": "figlet",
+    "p": "/figlet",
+    "d": "字符串转为 “字画符”。"
+  },
   "file": {
     "n": "file",
     "p": "/file",
@@ -854,6 +874,11 @@
     "p": "/getenforce",
     "d": "显示当前SELinux的应用模式，是强制、执行还是停用"
   },
+  "getent": {
+    "n": "getent",
+    "p": "/getent",
+    "d": "查询 DNS 名称服务器中的命名空间"
+  },
   "getsebool": {
     "n": "getsebool",
     "p": "/getsebool",
@@ -868,6 +893,11 @@
     "n": "gpasswd",
     "p": "/gpasswd",
     "d": "Linux下工作组文件的管理工具"
+  },
+  "gpg": {
+    "n": "gpg",
+    "p": "/gpg",
+    "d": "可用于签名、检查、加密或解密的工具"
   },
   "gpm": {
     "n": "gpm",
@@ -953,6 +983,11 @@
     "n": "halt",
     "p": "/halt",
     "d": "关闭正在运行的Linux操作系统"
+  },
+  "hcitool": {
+    "n": "hcitool",
+    "p": "/hcitool",
+    "d": "hcitool是一个Linux命令行工具，用于管理和调试蓝牙设备。它可以用于扫描周围的蓝牙设备、连接到蓝牙设备发送命令和数据包等。"
   },
   "hdparm": {
     "n": "hdparm",
@@ -1097,7 +1132,7 @@
   "iostat": {
     "n": "iostat",
     "p": "/iostat",
-    "d": "监视系统输入输出设备和CPU的使用情况"
+    "d": "iostat命令被用于监视系统输入输出设备和CPU的使用情况。它的特点是汇报磁盘活动统计情况，同时也会汇报出CPU使用情况。同vmstat一样，iostat也有一个弱点，就是它不能对某个进程进行深入分析，仅对系统的整体情况进行分析。iowait 指在一个采样周期内有百分之几的时间是属于以下情况：CPU处于空闲状态并且至少有一个未完成的磁盘IO请求。"
   },
   "iotop": {
     "n": "iotop",
@@ -1168,6 +1203,11 @@
     "n": "iptstate",
     "p": "/iptstate",
     "d": "显示iptables的工作状态"
+  },
+  "iscsiadm": {
+    "n": "iscsiadm",
+    "p": "/iscsiadm",
+    "d": "管理iSCSI连接"
   },
   "ispell": {
     "n": "ispell",
@@ -1574,6 +1614,11 @@
     "p": "/mktemp",
     "d": "创建临时文件供shell脚本使用"
   },
+  "modetest": {
+    "n": "modetest",
+    "p": "/modetest",
+    "d": "DRM/KMS驱动程序libdrm中的模式测试工具"
+  },
   "modprobe": {
     "n": "modprobe",
     "p": "/modprobe",
@@ -1598,6 +1643,11 @@
     "n": "mtools",
     "p": "/mtools",
     "d": "显示mtools支持的指令"
+  },
+  "mtr": {
+    "n": "mtr",
+    "p": "/mtr",
+    "d": "`mtr` 结合了 `traceroute` 和 `ping` 程序的功能，是一款简单的网络诊断工具"
   },
   "mv": {
     "n": "mv",
@@ -1642,7 +1692,7 @@
   "nc": {
     "n": "nc",
     "p": "/nc",
-    "d": "用于设置路由器，是网络工具中的瑞士军刀。"
+    "d": "nc是网络工具中的瑞士军刀"
   },
   "ncftp": {
     "n": "ncftp",
@@ -1754,6 +1804,11 @@
     "p": "/openssl",
     "d": "强大的安全套接字层密码库"
   },
+  "pacman": {
+    "n": "pacman",
+    "p": "/pacman",
+    "d": "Arch Linux 系统及其衍生系统中默认使用的包管理器"
+  },
   "parted": {
     "n": "parted",
     "p": "/parted",
@@ -1827,7 +1882,22 @@
   "ping": {
     "n": "ping",
     "p": "/ping",
-    "d": "测试主机之间网络的连通性"
+    "d": "测试主机之间网络的连通性(ipv4)"
+  },
+  "ping6": {
+    "n": "ping6",
+    "p": "/ping6",
+    "d": "测试主机之间网络的连通性(ipv6)"
+  },
+  "pip": {
+    "n": "pip",
+    "p": "/pip",
+    "d": "Python 编程语言中的包管理器，用于安装和管理第三方 Python 模块"
+  },
+  "pkexec": {
+    "n": "pkexec",
+    "p": "/pkexec",
+    "d": "以其他用户身份执行命令"
   },
   "pkill": {
     "n": "pkill",
@@ -1868,6 +1938,11 @@
     "n": "protoize",
     "p": "/protoize",
     "d": "GNU-C代码转换为ANSI-C代码"
+  },
+  "prtstat": {
+    "n": "prtstat",
+    "p": "/prtstat",
+    "d": "显示进程信息"
   },
   "ps": {
     "n": "ps",
@@ -1949,6 +2024,11 @@
     "p": "/pwd",
     "d": "显示当前工作目录的绝对路径。"
   },
+  "pwdx": {
+    "n": "pwdx",
+    "p": "/pwdx",
+    "d": "用于显示指定进程的当前工作目录"
+  },
   "pwunconv": {
     "n": "pwunconv",
     "p": "/pwunconv",
@@ -2018,6 +2098,11 @@
     "n": "renice",
     "p": "/renice",
     "d": "修改正在运行的进程的调度优先级"
+  },
+  "reposync": {
+    "n": "reposync",
+    "p": "/reposync",
+    "d": "同步yum存储库到本地目录"
   },
   "repquota": {
     "n": "repquota",
@@ -2229,6 +2314,11 @@
     "p": "/sh",
     "d": "shell命令解释器"
   },
+  "sha256sum": {
+    "n": "sha256sum",
+    "p": "/sha256sum",
+    "d": "用于计算文件的 SHA-256 哈希值"
+  },
   "shift": {
     "n": "shift",
     "p": "/shift",
@@ -2364,6 +2454,11 @@
     "p": "/sshd",
     "d": "openssh软件套件中的服务器守护进程"
   },
+  "sshpass": {
+    "n": "sshpass",
+    "p": "/sshpass",
+    "d": "免交互 SSH 登录工具。"
+  },
   "startx": {
     "n": "startx",
     "p": "/startx",
@@ -2482,7 +2577,7 @@
   "tcpreplay": {
     "n": "tcpreplay",
     "p": "/tcpreplay",
-    "d": "将PCAP包重新发送，用于性能或者功能测试"
+    "d": "将保存在 PCAP 文件包重新发送，用于性能或者功能测试"
   },
   "tee": {
     "n": "tee",
